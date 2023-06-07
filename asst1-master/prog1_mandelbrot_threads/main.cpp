@@ -152,6 +152,7 @@ int main(int argc, char** argv) {
             mandelbrotThread(numThreads, x0, y0, x1, y1, width, height, maxIterations, output_thread);
             double endTime = CycleTimer::currentSeconds();
             minThread = std::min(minThread, endTime - startTime);
+            printf("\n");
         }
 
         printf("[mandelbrot thread]:\t\t[%.3f] ms\n", minThread * 1000);
