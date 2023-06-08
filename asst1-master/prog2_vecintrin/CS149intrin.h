@@ -113,6 +113,8 @@ void _cs149_veq_int(__cs149_mask &vecResult, __cs149_vec_int &veca, __cs149_vec_
 
 // Adds up adjacent pairs of elements, so
 //  [0 1 2 3] -> [0+1 0+1 2+3 2+3]
+//[0+1 0+1 2+3 2+3] -> [0+1 2+3 0+1 2+3]
+//[0+1 2+3 0+1 2+3] -> [0+1+2+3 0+1+2+3 0+1+2+3 0+1+2+3]
 void _cs149_hadd_float(__cs149_vec_float &vecResult, __cs149_vec_float &vec);
 
 // Performs an even-odd interleaving where all even-indexed elements move to front half

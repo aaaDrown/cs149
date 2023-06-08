@@ -249,7 +249,31 @@ void clampedExpVector(float* values, int* exponents, float* output, int N) {
   // Your solution should work for any value of
   // N and VECTOR_WIDTH, not just when VECTOR_WIDTH divides N
   //
-  
+    __cs149_mask pass = _cs149_init_ones();
+    __cs149_vec_int zeros = _cs149_vset_int(0);
+    __cs149_vec_int ones = _cs149_vset_int(1);
+    __cs149_vec_float tst = _cs149_vset_float(9.999999f);
+
+    for (int i = 0; i < N; i+=VECTOR_WIDTH) {
+        __cs149_vec_float x;
+        __cs149_vec_float result = _cs149_vset_float(1.f);
+        __cs149_vec_int y;
+        __cs149_mask mak;
+        
+        _cs149_vload_float(x, values + i, pass);
+        _cs149_vload_int(y, exponents + i, pass);
+        while (1) {
+            _cs149_vgt_int(mak, y, zeros, pass);
+            if (!_cs149_cntbits(mak)) break;
+            _cs149_vmult_float(result, x, result, mak);
+            _cs149_vsub_int(y, y, ones, mak);
+        }
+        _cs149_vgt_float(mak, result, tst, pass);
+        _cs149_vset_float(result, 9.999999f, mak);
+        _cs149_vstore_float(values + i, x, pass);
+        _cs149_vstore_float(output + i, result, pass);
+    }
+    
 }
 
 // returns the sum of all elements in values
@@ -270,11 +294,34 @@ float arraySumVector(float* values, int N) {
   //
   // CS149 STUDENTS TODO: Implement your vectorized version of arraySumSerial here
   //
-  
-  for (int i=0; i<N; i+=VECTOR_WIDTH) {
+    //  [0 1 2 3] -> [0+1 0+1 2+3 2+3]
+    //[0+1 0+1 2+3 2+3] -> [0+1 2+3 0+1 2+3]
+    //[0+1 2+3 0+1 2+3] -> [0+1+2+3 0+1+2+3 0+1+2+3 0+1+2+3]
+    __cs149_mask pass = _cs149_init_ones();
+    __cs149_vec_float cur;
+    float sum = 0, res[20];
 
+  for (int i=0; i<N; i+=VECTOR_WIDTH) {
+      _cs149_vload_float(cur, values + i, pass);
+      int t = VECTOR_WIDTH;
+      while (1) {
+          if (t <= 1) break;
+          t /= 2;
+          _cs149_hadd_float(cur, cur);
+          _cs149_interleave_float(cur, cur);
+      }
+      _cs149_vstore_float(res, cur, pass);
+      sum += res[0];
+      //printf("%f\n", res[0]);
   }
 
-  return 0.0;
+  //printf("\n\n");
+  //  for (int i = 0; i < N; i++) {
+
+  //      printf("%f\n", values[i]);
+  //      //sum += values[i];
+  //  }
+
+    return sum;
 }
 
