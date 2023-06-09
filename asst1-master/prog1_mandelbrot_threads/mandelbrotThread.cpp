@@ -37,19 +37,19 @@ void workerThreadStart(WorkerArgs * const args) {
 
     
     WorkerArgs a = *args;
-    int t = a.height / a.numThreads;
+    //int t = a.height / a.numThreads;
     double startTime = CycleTimer::currentSeconds();
-    mandelbrotSerial(a.x0, a.y0, a.x1, a.y1,
-        a.width, a.height,
-        a.threadId * t, t + 3,
-        a.maxIterations, a.output);
+    //mandelbrotSerial(a.x0, a.y0, a.x1, a.y1,
+    //    a.width, a.height,
+    //    a.threadId * t, t + 3,
+    //    a.maxIterations, a.output);
 
-    //for (unsigned i = a.threadId; i < a.height; i += a.numThreads) {
-    //    mandelbrotSerial(a.x0, a.y0, a.x1, a.y1,
-    //        a.width, a.height,
-    //        i, 1,
-    //        a.maxIterations, a.output);
-    //}
+    for (unsigned i = a.threadId; i < a.height; i += a.numThreads) {
+        mandelbrotSerial(a.x0, a.y0, a.x1, a.y1,
+            a.width, a.height,
+            i, 1,
+            a.maxIterations, a.output);
+    }
     double endTime = CycleTimer::currentSeconds();
     double costTime = std::min(1e30, endTime - startTime);
 

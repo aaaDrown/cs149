@@ -295,8 +295,8 @@ float arraySumVector(float* values, int N) {
   // CS149 STUDENTS TODO: Implement your vectorized version of arraySumSerial here
   //
     //  [0 1 2 3] -> [0+1 0+1 2+3 2+3]
-    //[0+1 0+1 2+3 2+3] -> [0+1 2+3 0+1 2+3]
-    //[0+1 2+3 0+1 2+3] -> [0+1+2+3 0+1+2+3 0+1+2+3 0+1+2+3]
+    //  [0+1 0+1 2+3 2+3] -> [0+1 2+3 0+1 2+3]
+    //  [0+1 2+3 0+1 2+3] -> [0+1+2+3 0+1+2+3 0+1+2+3 0+1+2+3]
     __cs149_mask pass = _cs149_init_ones();
     __cs149_vec_float cur;
     float sum = 0, res[20];

@@ -68,7 +68,7 @@ bool verifyResult (int *gold, int *result, int width, int height) {
 
 int main(int argc, char** argv) {
 
-    for (int numThread = 2; numThread <= 8; numThread++) {
+    for (int numThread = 16; numThread <= 16; numThread++) {
         const unsigned int width = 1600;
         const unsigned int height = 1200;
         const int maxIterations = 256;
